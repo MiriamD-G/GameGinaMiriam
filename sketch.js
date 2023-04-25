@@ -1,12 +1,15 @@
 let gameState = 0
 let gameStartTime = 0
-let gameDuration = 5
-let fontSize = 40
+let gameDuration = 15
+let fontSize = 20
 let hasGameStarted = false
 let timeElapsed
+let ball
 
 function setup(){
 createCanvas (600, 600)
+ball = new Ball()
+
 }
 
 function draw(){
@@ -36,6 +39,8 @@ function playGame(){
     textSize(fontSize)
     text("SPIELEN", width/2, height/2)
 
+    ball.show()
+    ball.bounce()
     // Spiellogik ...
 }
 function finishGame(){
@@ -47,13 +52,13 @@ function finishGame(){
 
 function drawTime(){
     timeElapsed = millis()/1000
-    textSize(20)
+    textSize(10)
     if(hasGameStarted){
         let gameTimeElapsed = round(gameDuration - (timeElapsed - gameStartTime))
         text("verbleibende Zeit: " + gameTimeElapsed, width/2, height - 20)
     }
 
-    if(timeElapsed -gameStartTime >= gameDuration){
+    if(timeElapsed - gameStartTime >= gameDuration){
         gameStartTime = NaN
         hasGameStarted = false
         gameState = 2
