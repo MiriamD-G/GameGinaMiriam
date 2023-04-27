@@ -26,3 +26,4 @@ Im File pongHorizontal.js bewegen sich die Balken mit den Tasten A + S, und K + 
 Beim File pong.js können sich beide Balken nach oben und unten bewegen mit den Tasten A + Q und L + O. Das Wegspicken müssten wir noch schnell analog des anderen Programmieren. 
 
 Ich denke, jetzt müssen wir uns für eine der beiden Varianten entscheiden. Dann können wir sie im gameStates.js einbauen und dort können wir dann auch noch die anderen Gamestates dazu gestalten. Mir ist es eigentlich egal. Ich finde, es gibt bei beiden Versionen undglaublich viele Möglichkeiten um das Spiel lustig zu machen. Bei der Variante pongHorizontal.js – die eher wie Squash ist – spielt man  eher gegeneinader und bei der pong.js Version – die mehr wie Tennis ist – ist man mehr ein Team, das ist irgendwie friedlicher... Auf welche Version hast Du mehr Lust?
+
