@@ -2,28 +2,38 @@ var score = 0
 var wBar = 20; // With of bar
 var lBar = 300; // Length of bar
 var dBall = 150; // Diameter of ball
-var speedX = 10;
-var speedY = 5;
-var xBall = Math.floor(Math.random() * 300) + 50; // x-Start/x-Position of ball
-var yBall = 50; // y-Start/y-Position of ball
+var speedX = 13;
+var speedY = 15;
+var xBall 
+var yBall 
 let posA = 50 // Position of barA
 let posB = 50 // Position of barB
 let scoreA = 0;
 let scoreB = 0;
 let fontSize = 50;
-
+let barSpeed = 15
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
     noStroke();
     xBall = random(dBall/2, width -dBall/2)
     yBall = random(dBall/2, height - dBall/2)
+    // xBall = width/2
+    // yBall = height/2
+    colorMode(HSB, 360, 100, 100)
 }
 
 function draw() {
-  // Background
   background(0);
-  fill(255);
+  // fill(255);
+
+  // Linien im Spielfeld
+  push()
+  stroke(10, 0, 100)
+  line(width/2, 0, width/2, height)
+  line(0, height/2, width, height/2)
+  pop()
+
 
   //Spieler A links
   // Score
@@ -31,18 +41,16 @@ function draw() {
   textSize(24);
   textAlign(LEFT)
   text("Score A: " + scoreA, 10, 25);
-  // Farbe mit map gegeben
-  let redA = map(posA, 0, height, 0, 255);
-  let greenA = map(posA, 0, height, 255, 0);
-  let blueA = map(posA, 0, height, 0, 255);
-  fill(redA, greenA, blueA)
+  // Farbe: je näher der Ball, umso intensiver die Farbe
+  let sA = map(xBall, 0, width, 100, 0)
+  fill(150, sA, 100)
     // Balken links. Mit A und Q steuerbar innerhalb der windowHeight
     rect(0, posA, wBar, lBar)
     if (keyIsDown(65) && posA < windowHeight - lBar){ // a nach unten
-        posA += 10
+        posA += barSpeed
       }
     if (keyIsDown(81) && posA > 0){ // q nach oben
-        posA -= 10
+        posA -= barSpeed
       }
   
   //Spieler B rechts
@@ -51,18 +59,16 @@ function draw() {
   fill(255)
   textAlign(RIGHT);
   text(" Score B: " + scoreB, width - 10, 25);
-  // Farbe mit map gegeben
-  let redB = map(posB, 0, height, 0, 255);
-  let greenB = map(posB, 0, height, 255, 0);
-  let blueB = map(posB, 0, height, 0, 255);
-  fill(redB, greenB, blueB)
+  // Farbe: je näher der Ball, umso intensiver die Farbe
+  let sB = map(xBall, 0, width, 0, 100)
+  fill(350, sB, 100)
     // Balken rechts. Mit L und O steuerbar innerhalb der windowHeight
   rect(width - wBar, posB, wBar, lBar)
   if (keyIsDown(76) && posB < windowHeight - lBar) { // l nach unten
-    posB += 10
+    posB += barSpeed
   }
   if (keyIsDown(79) && posB > 0) { // o nach oben
-    posB -= 10
+    posB -= barSpeed
   }
     
 // Ball
@@ -80,7 +86,7 @@ function draw() {
 // Liegt: x-Achse = Balken breite und der Hälfte des Balls // y-Achse zwischen den beiden Balken Enden
   if (xBall < wBar + dBall/2 && yBall > posA && yBall < posA + lBar) {
     speedX = -speedX
-    scoreA = scoreA + 1 // zählt ein Punkt im Score dazu
+    // scoreA = scoreA + 1 // zählt ein Punkt im Score dazu
     // dBall = dBall -10 // reduziert die Ballgrösse bei jedem Abprall
 }
 
@@ -88,15 +94,29 @@ function draw() {
 // Liegt: x-Achse = WindowWidth - Balken breite und der Hälfte des Balls // y-Achse zwischen den beiden Balken Enden
   if (xBall > windowWidth - wBar - dBall/2 && yBall > posB && yBall < posB + lBar) {
     speedX = -speedX
-    scoreB = scoreB + 1 // zählt ein Punkt im Score dazu
+    // scoreB = scoreB + 1 // zählt ein Punkt im Score dazu
     // dBall = dBall -10 // reduziert die Ballgrösse bei jedem Abprall
 }
 
   // Wenn der Ball aus dem Canvas fliegt    
-  if (xBall > windowWidth || xBall < 0) {
-    background(255, 0, 0)
-    textAlign(CENTER)
-    textSize(fontSize)
-    text("GAME OVER", width / 2, height / 2)
+  // if (xBall > windowWidth || xBall < 0) {
+  //   background(255, 0, 0)
+  //   textAlign(CENTER)
+  //   textSize(fontSize)
+  //   text("GAME OVER", width / 2, height / 2)
+  // }
+
+  if (xBall > windowWidth) {
+    scoreA += 1  
+    xBall = width/2
+    yBall = height/2
   }
+  if (xBall < 0) {
+    scoreB += 1
+    xBall = width/2
+    yBall = height/2
+  }
+
+
+
 }
