@@ -6,10 +6,10 @@ let hasGameStarted = false
 let timeElapsed
 let ball
 
-var score = 0
+// var score = 0
 var wBar = 20; // With of bar
 var lBar = 300; // Length of bar
-var dBall = 50; // Diameter of ball
+var dBall = 100; // Diameter of ball
 var speedX = 5;
 var speedY = 10;
 var xBall 
@@ -19,7 +19,9 @@ let posB = 50 // Position of barB
 let scoreA = 0;
 let scoreB = 0;
 let barSpeed = 15 // Reaktionsgeschwindigkeit der Balken
-
+let delayAfterScore = 1000;
+let timeScored = null;
+let scoreUpdated = false;
 
 function setup(){
 createCanvas (windowWidth, windowHeight)
@@ -27,7 +29,6 @@ createCanvas (windowWidth, windowHeight)
 xBall = width/2
 yBall = height/2
 colorMode(HSB, 360, 100, 100)
-
 }
 
 function draw(){
@@ -51,8 +52,37 @@ function startGame(){
     text("START", width/2, height/2)
 
 }
+
+
+// ! negation von scoreUpdated also wenn der score nicht updated wurde wird er updated
+// score wird gesetzt bevor der Ball wieder neu gestzt wird
+// die aktuelle Zeit (millis()) wird minus die unten gesetzte timeScored gerechnet. Sobald diese grösser wird als die gesetzte delayAfterScore wird der Ball in die Mitte gesetzt
+function resetGame(playerScored){
+    if (!scoreUpdated) {
+        updateScore(playerScored);
+    }
+    if (millis() - timeScored > delayAfterScore){
+        xBall = width / 2;
+        yBall = height / 2;
+        timeScored = null;
+        scoreUpdated = false;
+
+    }
+}
+function updateScore(playerScored) {
+    if (playerScored == 'A') {
+        scoreA += 1;
+    }
+    if (playerScored == 'B') {
+        scoreB += 1;
+    }
+    scoreUpdated = true;
+}
+
 function playGame(){
-    background(230, 60, 30)
+    let sB = map(xBall, 0, width, 0, 100)
+    let sA = map(xBall, 0, width, 100, 0)
+    background(sA, 100, sA)
 
     // ball.show()
     // ball.bounce()
@@ -60,13 +90,14 @@ function playGame(){
 
       // Linien im Spielfeld
     push()
-    stroke(10, 0, 100)
-    line(width/2, 0, width/2, height)
-    line(0, height/2, width, height/2)
+    // stroke(10, 0, 100)
+    // line(width/2, 0, width/2, height)
+    // line(0, height/2, width, height/2)
     pop()
 
     //Spieler A links
-    let sA = map(xBall, 0, width, 100, 0)
+    // let sA = map(xBall, 0, width, 100, 0)
+    noStroke();
     fill(150, sA, 100)
     textSize(50);
     textAlign(LEFT)
@@ -80,7 +111,8 @@ function playGame(){
     }
   
     //Spieler B rechts
-    let sB = map(xBall, 0, width, 0, 100)
+    // let sB = map(xBall, 0, width, 0, 100)
+    noStroke();
     fill(350, sB, 100)
     textSize(50);
     textAlign(RIGHT);
@@ -108,27 +140,33 @@ function playGame(){
     // Liegt: x-Achse = Balken breite und der Hälfte des Balls // y-Achse zwischen den beiden Balken Enden
     if (xBall < wBar + dBall/2 && yBall > posA && yBall < posA + lBar) {
         speedX = -speedX
-    // dBall = dBall -10 // reduziert die Ballgrösse bei jedem Abprall
+        // dBall = dBall -10 // reduziert die Ballgrösse bei jedem Abprall
     }
 
     // Abprall vom Spieler B
     // Liegt: x-Achse = WindowWidth - Balken breite und der Hälfte des Balls // y-Achse zwischen den beiden Balken Enden
     if (xBall > windowWidth - wBar - dBall/2 && yBall > posB && yBall < posB + lBar) {
         speedX = -speedX
-    // dBall = dBall -10 // reduziert die Ballgrösse bei jedem Abprall
+        // dBall = dBall -10 // reduziert die Ballgrösse bei jedem Abprall
+    }
+    
+    // if - Verschachtelung
+    // Anfangswert von timeScored = null
+    // if timeScored == null check bewirkt, dass timeScored nicht jedes mal beim Durchlaufen des draw-loops auf die aktuelle Zeit gesetzt wird
+    if (xBall > windowWidth) {
+        if (timeScored == null) {
+            timeScored = millis();
+        }
+        resetGame('A');
     }
 
-    if (xBall > windowWidth) {
-        scoreA += 1  
-        xBall = width/2
-        yBall = height/2
-    }
     if (xBall < 0) {
-        scoreB += 1
-        xBall = width/2
-        yBall = height/2
+        if (timeScored == null) {
+            timeScored = millis();
+        }
+        resetGame('B');
     }
-    if (scoreA == 3 || scoreB == 3){
+    if (scoreA == 10 || scoreB == 10){
         gameState = 2
     }
 }
@@ -149,4 +187,11 @@ function mousePressed(){
     } else if (gameState == 2){
         gameState = 0
     }
+}
+
+function sleep(millisecondsDuration) {
+    return new Promise((resolve) => {
+        setTimeout(resolve, millisecondsDuration);
+        console.log('bar');
+    })
 }
