@@ -1,14 +1,15 @@
 let gameState = 0
 let gameStartTime = 0
 let gameDuration = 10
-let fontSize = 20
+let fontSize = 40
 let hasGameStarted = false
 let timeElapsed
 let ball
+let arrow
 
 // var score = 0
 var wBar = 20; // With of bar
-var lBar = 300; // Length of bar
+var lBar = 200; // Length of bar
 var dBall = 100; // Diameter of ball
 var speedX = 5;
 var speedY = 10;
@@ -18,14 +19,16 @@ let posA = 50 // Position of barA
 let posB = 50 // Position of barB
 let scoreA = 0;
 let scoreB = 0;
-let barSpeed = 15 // Reaktionsgeschwindigkeit der Balken
-let delayAfterScore = 1000;
+let barSpeed = 25 // Reaktionsgeschwindigkeit der Balken
+let delayAfterScore = 5000;
 let timeScored = null;
 let scoreUpdated = false;
+let goal = 3 // Anzahl Punkte für den Sieg
 
 function setup(){
 createCanvas (windowWidth, windowHeight)
 // ball = new Ball()
+arrow = new Arrow(100, 70, 20)
 xBall = width/2
 yBall = height/2
 colorMode(HSB, 360, 100, 100)
@@ -35,6 +38,7 @@ function draw(){
     if(gameState == 0){
         // Start
         startGame()
+
     } else if (gameState == 1){
         // Spielen
         playGame()
@@ -46,11 +50,58 @@ function draw(){
 }
 
 function startGame(){
-    background(20, 100, 100)
+    background(220, 40, 40)
     textAlign(CENTER)
-    textSize(fontSize)
-    text("START", width/2, height/2)
+    textSize(20)
+    textStyle(BOLD)
+    // text("START", width/2, height/2)
 
+    // Q-Pfeil:
+    push()
+    translate(width/2-80, height/2-50)
+    push()
+    stroke(150, 50, 100)
+    rotate(PI)
+    arrow.show()
+    pop()
+    fill(220, 40, 40)
+    text("Q", 0, 0)
+    pop()
+
+    // A-Pfeil:
+    push()
+    translate(width/2-80, height/2+50)
+    push()
+    stroke(150, 50, 100)
+    arrow.show()
+    pop()
+    fill(220, 40, 40)
+    text("A", 0, 15)
+    pop()
+
+    // O-Pfeil:
+    push()
+    translate(width/2+80, height/2-50)
+    push()
+    stroke(350, 50, 100)
+    rotate(PI)
+    arrow.show()
+    pop()
+    fill(220, 40, 40)
+    text("O", 0, 0)
+    pop()
+
+    // L-Pfeil:
+    push()
+    translate(width/2+80, height/2+50)
+    push()
+    stroke(350, 50, 100)
+    arrow.show()
+    pop()
+    fill(220, 40, 40)
+    text("L", 0, 15)
+    pop()
+    
 }
 
 
@@ -82,7 +133,7 @@ function updateScore(playerScored) {
 function playGame(){
     let sB = map(xBall, 0, width, 0, 100)
     let sA = map(xBall, 0, width, 100, 0)
-    background(sA, 100, sA)
+    background(250, 100, 20)
 
     // ball.show()
     // ball.bounce()
@@ -166,7 +217,7 @@ function playGame(){
         }
         resetGame('B');
     }
-    if (scoreA == 10 || scoreB == 10){
+    if (scoreA == goal || scoreB == goal){
         gameState = 2
     }
 }
@@ -175,7 +226,13 @@ function finishGame(){
     background(150, 60, 100)
     textAlign(CENTER)
     textSize(fontSize)
-    text("GAME OVER", width/2, height/2)
+    text("The Winner is:", width/2, height/2)
+    if (scoreA == goal){
+        text("A", width/2, height/2 + 40)
+    }
+    if (scoreB == goal){
+        text("B", width/2, height/2 + 40)
+    }
 }
 
 
