@@ -7,6 +7,7 @@ let timeElapsed
 let ball
 let arrow
 
+// test
 // var score = 0
 var wBar = 2; // With of bar
 var lBar = 200; // Length of bar
