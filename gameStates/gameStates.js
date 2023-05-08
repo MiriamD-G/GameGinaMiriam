@@ -196,43 +196,31 @@ function playGame() {
         speedY = -speedY
     }
 
-    // Abprall vom Spieler A
-    // Liegt: x-Achse = Balken breite und der Hälfte des Balls // y-Achse zwischen den beiden Balken Enden
-    // if (xBall < wBar + dBall/2 && yBall > posA && yBall < posA + lBar) {
-    //     speedX = -speedX
-    if (xBall < wBar + dBall / 2 && xBall + dBall / 2 > 0 && yBall > posA && yBall < posA + lBar) {
+    const ballAmLinkenRand = xBall < wBar + dBall/2 && xBall + dBall/2 > 0
+    const ballAufHoeheLinkesPaddle = yBall > posA && yBall < posA + lBar
+
+    const ballAmRechtenRand = xBall > windowWidth - wBar - dBall/2 && xBall - dBall/2 < windowWidth
+    const ballAufHoeheRechtesPaddle = yBall > posB && yBall < posB + lBar
+
+    const abprallLinks = ballAmLinkenRand && ballAufHoeheLinkesPaddle
+    const abprallRechts = ballAmRechtenRand && ballAufHoeheRechtesPaddle
+
+    if (abprallLinks || abprallRechts) {
         speedX = -speedX
-        // dBall = dBall -10 // reduziert die Ballgrösse bei jedem Abprall
     }
 
-    // Abprall vom Spieler B
-    // Liegt: x-Achse = WindowWidth - Balken breite und der Hälfte des Balls // y-Achse zwischen den beiden Balken Enden
-    // if (xBall > windowWidth - wBar - dBall/2 && yBall > posB && yBall < posB + lBar) {
-    //     speedX = -speedX
-    if (xBall > windowWidth - wBar - dBall / 2 && xBall - dBall / 2 < windowWidth && yBall > posB && yBall < posB + lBar) {
-        speedX = -speedX
-        // dBall = dBall -10 // reduziert die Ballgrösse bei jedem Abprall
-    }
-
-    // if - Verschachtelung
-    // Anfangswert von timeScored = null
-    // if timeScored == null check bewirkt, dass timeScored nicht jedes mal beim Durchlaufen des draw-loops auf die aktuelle Zeit gesetzt wird
-    // - dBall/2
     if (xBall - dBall / 2 > windowWidth) {
         if (timeScored == null) {
             timeScored = millis();
         }
         resetGame('A');
-    }
-
-    //+ dBall/2 hinzugefügt
-    if (xBall + dBall / 2 < 0) {
+    } else if (xBall + dBall / 2 < 0) {
+        //+ dBall/2 hinzugefügt
         if (timeScored == null) {
             timeScored = millis();
         }
         resetGame('B');
-    }
-    if (scoreA == goal || scoreB == goal){
+    } else if (scoreA == goal || scoreB == goal){
         gameState = 2
     }
 }
@@ -262,9 +250,3 @@ function mousePressed() {
         gameState = 0
     }
 }
-
-// function sleep(millisecondsDuration) {
-//     return new Promise((resolve) => {
-//         setTimeout(resolve, millisecondsDuration);
-//         console.log('bar');
-//     })
