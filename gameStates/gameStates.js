@@ -33,7 +33,7 @@ xBall = width/2
 yBall = height/2
 colorMode(HSB, 360, 100, 100)
 }
-//Test
+
 function draw(){
     if(gameState == 0){
         // Start
@@ -48,7 +48,7 @@ function draw(){
         finishGame()
     }
 }
-
+// Test
 function startGame(){
     background(220, 40, 40)
     textAlign(CENTER)
