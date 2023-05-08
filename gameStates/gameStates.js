@@ -8,9 +8,9 @@ let ball
 let arrow
 
 // var score = 0
-var wBar = 20; // With of bar
+var wBar = 2; // With of bar
 var lBar = 200; // Length of bar
-var dBall = 100; // Diameter of ball
+var dBall = 10; // Diameter of ball
 var speedX = 5;
 var speedY = 10;
 var xBall 
@@ -20,7 +20,7 @@ let posB = 50 // Position of barB
 let scoreA = 0;
 let scoreB = 0;
 let barSpeed = 25 // Reaktionsgeschwindigkeit der Balken
-let delayAfterScore = 5000;
+let delayAfterScore = 3000;
 let timeScored = null;
 let scoreUpdated = false;
 let goal = 3 // Anzahl Punkte für den Sieg
@@ -61,8 +61,8 @@ function startGame(){
     translate(width/2-80, height/2-50)
     push()
     stroke(150, 50, 100)
-    rotate(PI)
-    arrow.show()
+    // rotate(PI)
+    arrow.show(PI)
     pop()
     fill(220, 40, 40)
     text("Q", 0, 0)
@@ -189,34 +189,34 @@ function playGame(){
 
     // Abprall vom Spieler A
     // Liegt: x-Achse = Balken breite und der Hälfte des Balls // y-Achse zwischen den beiden Balken Enden
-    if (xBall < wBar + dBall/2 && yBall > posA && yBall < posA + lBar) {
-        speedX = -speedX
-        // dBall = dBall -10 // reduziert die Ballgrösse bei jedem Abprall
-    }
 
-    // Abprall vom Spieler B
-    // Liegt: x-Achse = WindowWidth - Balken breite und der Hälfte des Balls // y-Achse zwischen den beiden Balken Enden
-    if (xBall > windowWidth - wBar - dBall/2 && yBall > posB && yBall < posB + lBar) {
+    const ballAmLinkenRand = xBall < wBar + dBall/2
+    const ballAufHoeheLinkesPaddle = yBall > posA && yBall < posA + lBar
+
+    const ballAmRechtenRand = xBall > windowWidth - wBar - dBall/2
+    const ballAufHoeheRechtesPaddle = yBall > posB && yBall < posB + lBar
+
+    const abprallLinks = ballAmLinkenRand && ballAufHoeheLinkesPaddle
+    const abprallRechts = ballAmRechtenRand && ballAufHoeheRechtesPaddle
+
+    if (abprallLinks || abprallRechts) {
         speedX = -speedX
-        // dBall = dBall -10 // reduziert die Ballgrösse bei jedem Abprall
-    }
+    } else if (xBall > windowWidth) {
+        // if - Verschachtelung
+        // Anfangswert von timeScored = null
+        // if timeScored == null check bewirkt, dass timeScored nicht jedes mal beim Durchlaufen des draw-loops auf die aktuelle Zeit gesetzt wird
     
-    // if - Verschachtelung
-    // Anfangswert von timeScored = null
-    // if timeScored == null check bewirkt, dass timeScored nicht jedes mal beim Durchlaufen des draw-loops auf die aktuelle Zeit gesetzt wird
-    if (xBall > windowWidth) {
         if (timeScored == null) {
             timeScored = millis();
         }
         resetGame('A');
-    }
-
-    if (xBall < 0) {
+    } else if (xBall < 0) {
         if (timeScored == null) {
             timeScored = millis();
         }
         resetGame('B');
     }
+    
     if (scoreA == goal || scoreB == goal){
         gameState = 2
     }
@@ -246,9 +246,9 @@ function mousePressed(){
     }
 }
 
-function sleep(millisecondsDuration) {
-    return new Promise((resolve) => {
-        setTimeout(resolve, millisecondsDuration);
-        console.log('bar');
-    })
-}
+// function sleep(millisecondsDuration) {
+//     return new Promise((resolve) => {
+//         setTimeout(resolve, millisecondsDuration);
+//         console.log('bar');
+//     })
+// }

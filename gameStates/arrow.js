@@ -9,7 +9,9 @@ class Arrow {
         this.s = s // Stroke
           
     }
-    show(){
+    show(angle){
+        this.angle = angle
+        rotate(this.angle)
         strokeWeight(this.s)
         noFill()
         strokeCap(ROUND)
