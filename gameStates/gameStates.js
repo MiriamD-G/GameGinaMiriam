@@ -11,7 +11,7 @@ let arrow
 // var score = 0
 var wBar = 2; // With of bar
 var lBar = 200; // Length of bar
-var dBall = 10; // Diameter of ball
+var dBall = 20; // Diameter of ball
 var speedX = 5;
 var speedY = 10;
 var xBall 
@@ -29,7 +29,7 @@ let goal = 3 // Anzahl Punkte für den Sieg
 function setup(){
 createCanvas (windowWidth, windowHeight)
 // ball = new Ball()
-arrow = new Arrow(100, 70, 20)
+arrow = new Arrow()
 xBall = width/2
 yBall = height/2
 colorMode(HSB, 360, 100, 100)
@@ -52,10 +52,16 @@ function draw(){
 
 function startGame(){
     background(220, 40, 40)
+    // text("START", width/2, height/2)
+
+    translate(width/2, height/2)
+    stroke(230, 100, 100)
+    arrow.show(0, 0, HALF_PI, "B")
+
+    /*
     textAlign(CENTER)
     textSize(20)
     textStyle(BOLD)
-    // text("START", width/2, height/2)
 
     // Q-Pfeil:
     push()
@@ -102,6 +108,7 @@ function startGame(){
     fill(220, 40, 40)
     text("L", 0, 15)
     pop()
+    */
     
 }
 
@@ -142,9 +149,9 @@ function playGame(){
 
       // Linien im Spielfeld
     push()
-    // stroke(10, 0, 100)
-    // line(width/2, 0, width/2, height)
-    // line(0, height/2, width, height/2)
+    stroke(10, 0, 100)
+    line(width/2, 0, width/2, height)
+    line(0, height/2, width, height/2)
     pop()
 
     //Spieler A links
@@ -191,10 +198,10 @@ function playGame(){
     // Abprall vom Spieler A
     // Liegt: x-Achse = Balken breite und der Hälfte des Balls // y-Achse zwischen den beiden Balken Enden
 
-    const ballAmLinkenRand = xBall < wBar + dBall/2
+    const ballAmLinkenRand = xBall < wBar + dBall/2 && xBall + dBall/2 > 0
     const ballAufHoeheLinkesPaddle = yBall > posA && yBall < posA + lBar
 
-    const ballAmRechtenRand = xBall > windowWidth - wBar - dBall/2
+    const ballAmRechtenRand = xBall > windowWidth - wBar - dBall/2 && xBall - dBall/2 < windowWidth
     const ballAufHoeheRechtesPaddle = yBall > posB && yBall < posB + lBar
 
     const abprallLinks = ballAmLinkenRand && ballAufHoeheLinkesPaddle
@@ -202,7 +209,7 @@ function playGame(){
 
     if (abprallLinks || abprallRechts) {
         speedX = -speedX
-    } else if (xBall > windowWidth) {
+    } else if (xBall - dBall/2 > windowWidth) {
         // if - Verschachtelung
         // Anfangswert von timeScored = null
         // if timeScored == null check bewirkt, dass timeScored nicht jedes mal beim Durchlaufen des draw-loops auf die aktuelle Zeit gesetzt wird
@@ -211,7 +218,7 @@ function playGame(){
             timeScored = millis();
         }
         resetGame('A');
-    } else if (xBall < 0) {
+    } else if (xBall + dBall/2 < 0) {
         if (timeScored == null) {
             timeScored = millis();
         }
