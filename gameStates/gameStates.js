@@ -21,7 +21,7 @@ let barSpeed = 15 // Reaktionsgeschwindigkeit der Balken
 let delayAfterScore = 1000;
 let timeScored = null;
 let scoreUpdated = false;
-// let arrow
+let arrow
 let goal = 3
 
 function setup(){
@@ -48,12 +48,32 @@ function draw() {
 }
 
 function startGame(){
-    background(220, 40, 40)
+    background(220, 50, 50)
     // text("START", width/2, height/2)
-
+    push()
     translate(width/2, height/2)
-    stroke(230, 100, 100)
-    arrow.show(0, 0, HALF_PI, "B")
+    stroke(150, 100, 100)
+    arrow.show(200, 0, PI, "Q")
+    pop()
+    push()
+    stroke(150, 100, 100)
+    translate(width/2, height/2)
+    arrow.show(-200, 30, 0, "A")
+    pop()
+    push()
+    translate(width/2, height/2)
+    stroke(350, 60, 100)
+    arrow.show(-200, 0, PI, "O")
+    pop()
+    push()
+    stroke(350, 60, 100)
+    translate(width/2, height/2)
+    arrow.show(200, 30, 0, "L")
+    pop()
+    text("Q", 200, 30)
+
+
+
 
     /*
     textAlign(CENTER)
@@ -107,9 +127,6 @@ function startGame(){
     pop()
     */
     
-    textSize(fontSize)
-    text("START", width / 2, height / 2)
-
 }
 
 
