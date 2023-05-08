@@ -6,7 +6,7 @@ let hasGameStarted = false
 let timeElapsed
 let ball
 
-var wBar = 2; // With of bar
+var wBar = 10; // With of bar
 var lBar = 200; // Length of bar
 var dBall = 20; // Diameter of ball
 var speedX = 5;
@@ -51,26 +51,35 @@ function startGame(){
     background(220, 50, 50)
     // text("START", width/2, height/2)
     push()
-    translate(width/2, height/2)
-    stroke(150, 100, 100)
-    arrow.show(200, 0, PI, "Q")
-    pop()
-    push()
     stroke(150, 100, 100)
     translate(width/2, height/2)
-    arrow.show(-200, 30, 0, "A")
-    pop()
-    push()
-    translate(width/2, height/2)
-    stroke(350, 60, 100)
-    arrow.show(-200, 0, PI, "O")
+    arrow.show(-300, 10, 0)
+    arrow.show(10, -280, -HALF_PI)
+    arrow.show(300, 30, -HALF_PI)
     pop()
     push()
     stroke(350, 60, 100)
     translate(width/2, height/2)
-    arrow.show(200, 30, 0, "L")
+    arrow.show(300, 10, 0)
+    arrow.show(-10, -280, HALF_PI)
+    arrow.show(-300, 30, HALF_PI)
     pop()
-    text("Q", 200, 30)
+    push()
+    translate(width/2, height/2)
+    fill(220, 50, 50)
+    textAlign(CENTER)
+    textSize(20)
+    textStyle(BOLD)
+    text("A", -300, -110)
+    text("S", -195, -3)
+    text("Y", -300, 105)
+    text("O", 300, -110)
+    text("K", 195, -3)
+    text("L", 300, 105)
+
+
+    pop()
+
 
 
 

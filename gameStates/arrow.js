@@ -8,7 +8,7 @@ class Arrow {
         this.y = y // y Start
         this.l = 100 // gesamte Pfeillänge
         this.e = this.y+this.l // End
-        this.b = 60 // Breite
+        this.b = 90 // Breite
         this.a = this.b/2 // Pfeilspitzlänge/Dreieck
         this.s = 20 // Stroke
 
@@ -16,7 +16,7 @@ class Arrow {
         rotate(this.angle)
         strokeWeight(this.s)
         noFill()
-        strokeCap(ROUND)
+        strokeCap(SQUARE)
         line(this.x, this.y, this.x, this.e)
         strokeJoin(MITER)
         beginShape()
@@ -25,11 +25,6 @@ class Arrow {
         vertex(this.x + this.b/2, this.e - this.a)
         endShape()
         fill(255)
-        noStroke()
-        textAlign(CENTER)
-        textSize(20)
-        textStyle(BOLD)
-        text(this.letter, this.x, this.e)
-    
+
     }
 }
