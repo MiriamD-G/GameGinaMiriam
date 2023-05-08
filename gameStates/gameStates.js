@@ -6,14 +6,9 @@ let hasGameStarted = false
 let timeElapsed
 let ball
 
-// test
-// var score = 0
 var wBar = 2; // With of bar
 var lBar = 200; // Length of bar
 var dBall = 20; // Diameter of ball
-var wBar = 20; // With of bar
-var lBar = 300; // Length of bar
-var dBall = 100; // Diameter of ball
 var speedX = 5;
 var speedY = 10;
 var xBall
@@ -26,6 +21,8 @@ let barSpeed = 15 // Reaktionsgeschwindigkeit der Balken
 let delayAfterScore = 1000;
 let timeScored = null;
 let scoreUpdated = false;
+// let arrow
+let goal = 3
 
 function setup(){
 createCanvas (windowWidth, windowHeight)
@@ -144,7 +141,7 @@ function updateScore(playerScored) {
 function playGame() {
     let sB = map(xBall, 0, width, 0, 100)
     let sA = map(xBall, 0, width, 100, 0)
-    background(sA, 100, sA)
+    background(230, 100, 80)
 
     // ball.show()
     // ball.bounce()
@@ -152,6 +149,7 @@ function playGame() {
 
     // Linien im Spielfeld
     push()
+    strokeWeight(1)
     stroke(10, 0, 100)
     line(width/2, 0, width/2, height)
     line(0, height/2, width, height/2)
@@ -200,60 +198,59 @@ function playGame() {
 
     // Abprall vom Spieler A
     // Liegt: x-Achse = Balken breite und der Hälfte des Balls // y-Achse zwischen den beiden Balken Enden
-    if (xBall < wBar + dBall / 2 && yBall > posA && yBall < posA + lBar) {
+    // if (xBall < wBar + dBall/2 && yBall > posA && yBall < posA + lBar) {
+    //     speedX = -speedX
+    if (xBall < wBar + dBall / 2 && xBall + dBall / 2 > 0 && yBall > posA && yBall < posA + lBar) {
         speedX = -speedX
         // dBall = dBall -10 // reduziert die Ballgrösse bei jedem Abprall
     }
 
-    const ballAmLinkenRand = xBall < wBar + dBall/2 && xBall + dBall/2 > 0
-    const ballAufHoeheLinkesPaddle = yBall > posA && yBall < posA + lBar
-
-    const ballAmRechtenRand = xBall > windowWidth - wBar - dBall/2 && xBall - dBall/2 < windowWidth
-    const ballAufHoeheRechtesPaddle = yBall > posB && yBall < posB + lBar
-
-    const abprallLinks = ballAmLinkenRand && ballAufHoeheLinkesPaddle
-    const abprallRechts = ballAmRechtenRand && ballAufHoeheRechtesPaddle
-
-    if (abprallLinks || abprallRechts) {
     // Abprall vom Spieler B
     // Liegt: x-Achse = WindowWidth - Balken breite und der Hälfte des Balls // y-Achse zwischen den beiden Balken Enden
-    if (xBall > windowWidth - wBar - dBall / 2 && yBall > posB && yBall < posB + lBar) {
+    // if (xBall > windowWidth - wBar - dBall/2 && yBall > posB && yBall < posB + lBar) {
+    //     speedX = -speedX
+    if (xBall > windowWidth - wBar - dBall / 2 && xBall - dBall / 2 < windowWidth && yBall > posB && yBall < posB + lBar) {
         speedX = -speedX
-    } else if (xBall - dBall/2 > windowWidth) {
-        // if - Verschachtelung
-        // Anfangswert von timeScored = null
-        // if timeScored == null check bewirkt, dass timeScored nicht jedes mal beim Durchlaufen des draw-loops auf die aktuelle Zeit gesetzt wird
-    
         // dBall = dBall -10 // reduziert die Ballgrösse bei jedem Abprall
     }
 
     // if - Verschachtelung
     // Anfangswert von timeScored = null
     // if timeScored == null check bewirkt, dass timeScored nicht jedes mal beim Durchlaufen des draw-loops auf die aktuelle Zeit gesetzt wird
-    if (xBall > windowWidth) {
+    // - dBall/2
+    if (xBall - dBall / 2 > windowWidth) {
         if (timeScored == null) {
             timeScored = millis();
         }
         resetGame('A');
     }
 
-    if (xBall + dBall/2 < 0) {
+    //+ dBall/2 hinzugefügt
+    if (xBall + dBall / 2 < 0) {
         if (timeScored == null) {
             timeScored = millis();
         }
         resetGame('B');
     }
-    if (scoreA == 10 || scoreB == 10) {
+    if (scoreA == goal || scoreB == goal){
         gameState = 2
     }
 }
 
-function finishGame() {
+
+function finishGame(){
     background(150, 60, 100)
     textAlign(CENTER)
     textSize(fontSize)
-    text("GAME OVER", width / 2, height / 2)
+    text("The Winner is: ", width/2, height/2)
+    if (scoreA == goal) {
+        text("A", width / 2, height / 2 + 40)
+    }
+    if (scoreB == goal) {
+        text("B", width / 2, height / 2 + 40)
+    }
 }
+
 
 
 function mousePressed() {
@@ -266,9 +263,8 @@ function mousePressed() {
     }
 }
 
-function sleep(millisecondsDuration) {
-    return new Promise((resolve) => {
-        setTimeout(resolve, millisecondsDuration);
-        console.log('bar');
-    })
-}
+// function sleep(millisecondsDuration) {
+//     return new Promise((resolve) => {
+//         setTimeout(resolve, millisecondsDuration);
+//         console.log('bar');
+//     })
