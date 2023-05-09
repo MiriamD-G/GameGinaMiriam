@@ -179,10 +179,10 @@ function playGame() {
     if (keyIsDown(87) && posAY > 2*border) { // W nach oben
         posAY -= barSpeed
     }
-    if (keyIsDown(83) && posAX <= TLineA - wBar) { // S nach rechts
+    if (keyIsDown(83) && posAX < TLineA - wBar) { // S nach rechts
         posAX += barSpeed
     }
-    if (keyIsDown(65) && posAX >= border) { // A nach links
+    if (keyIsDown(65) && posAX > border) { // A nach links
         posAX -= barSpeed
     }
 
@@ -199,10 +199,10 @@ function playGame() {
     if (keyIsDown(73) && posBY > 2*border) { // I nach oben
         posBY -= barSpeed
     }
-    if (keyIsDown(74) && posBX >= TLineB) { // J nach links
+    if (keyIsDown(74) && posBX > TLineB) { // J nach links
         posBX -= barSpeed
     }
-    if (keyIsDown(75) && posBX <= rightEnd - wBar) { // K nach rechts
+    if (keyIsDown(75) && posBX < rightEnd - wBar) { // K nach rechts
         posBX += barSpeed
     }
 
