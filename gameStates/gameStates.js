@@ -3,6 +3,13 @@ let hasGameStarted = false
 let timeElapsed
 let ball
 
+let border = 50
+let fieldWide
+let fieldHeight 
+let rightEnd = 800
+let TLineA = 300
+
+
 var wBar = 10 // With of bar
 var lBar = 200 // Length of bar
 var dBall = 20 // Diameter of ball
@@ -10,8 +17,10 @@ var speedX = 5
 var speedY = 10
 var xBall
 var yBall
-let posA = 50 // Position of barA
-let posB = 50 // Position of barB
+let posAY = 50 // y-Position of barA
+let posBY = 50 // Position of barB
+let posAX = 0 // x-Position von barA
+let posBX = rightEnd - wBar // x-Position von barB
 let scoreA = 0
 let scoreB = 0
 let barSpeed = 15 // Reaktionsgeschwindigkeit der Balken
@@ -29,6 +38,10 @@ let colBG
 
 function setup(){
 createCanvas (windowWidth, windowHeight)
+fieldWide = windowWidth - border*2
+fieldHeight = fieldWide*0.46
+
+
 // ball = new Ball()
 arrow = new Arrow()
 xBall = width/2
@@ -63,6 +76,7 @@ function startGame(){
     arrow.show(-300, 10, 0)
     arrow.show(10, -280, -HALF_PI)
     arrow.show(300, 30, -HALF_PI)
+    arrow.show(-10, 320, -HALF_PI)
     pop()
     push()
     stroke(colB)
@@ -70,6 +84,7 @@ function startGame(){
     arrow.show(300, 10, 0)
     arrow.show(-10, -280, HALF_PI)
     arrow.show(-300, 30, HALF_PI)
+    arrow.show(10, 320, HALF_PI)
     pop()
     push()
     translate(width/2, height/2)
@@ -77,12 +92,14 @@ function startGame(){
     textAlign(CENTER)
     textSize(20)
     textStyle(BOLD)
-    text("A", -300, -110)
+    text("W", -300, -110)
     text("S", -195, -3)
     text("Y", -300, 105)
-    text("O", 300, -110)
-    text("K", 195, -3)
-    text("L", 300, 105)
+    text("A", -405, -3)
+    text("I", 300, -110)
+    text("J", 195, -3)
+    text("M", 300, 105)
+    text("K", 405, -3)
     pop()    
 }
 
@@ -116,10 +133,14 @@ function playGame() {
     background(colBG)
 
     // Linien im Spielfeld
+
     push()
     strokeWeight(1)
+    noFill()
     stroke(10, 0, 100)
-    line(width/2, 0, width/2, height)
+    // rect(100, 100, 300, 300)
+    rect(border, border*2, fieldWide, fieldHeight)
+    line(width/2, border*2, width/2, border*2+fieldHeight)
     line(0, height/2, width, height/2)
     pop()
 
@@ -130,25 +151,41 @@ function playGame() {
     fill(colA)
     textAlign(LEFT)
     text(scoreA, 30, 55)
-    rect(0, posA, wBar, lBar)
-    if (keyIsDown(65) && posA < windowHeight - lBar) { // a nach unten
-        posA += barSpeed
+    rect(posAX, posAY, wBar, lBar)
+    if (keyIsDown(89) && posAY < windowHeight - lBar) { // Y nach unten
+        posAY += barSpeed
     }
-    if (keyIsDown(81) && posA > 0) { // q nach oben
-        posA -= barSpeed
+    if (keyIsDown(87) && posAY > 0) { // W nach oben
+        posAY -= barSpeed
     }
+    if (keyIsDown(83) && posAX >= 0 && posAY < TLineA) { // S nach rechts
+        posAX += barSpeed
+    }
+    if (keyIsDown(65) && posAX >= 0 && posAX < TLineA) { // A nach links
+        posAX -= barSpeed
+    }
+
+
 
     //Spieler B rechts
     fill(colB)
     textAlign(RIGHT);
     text(scoreB, width - 30, 55)
-    rect(width - wBar, posB, wBar, lBar)
-    if (keyIsDown(76) && posB < windowHeight - lBar) { // l nach unten
-        posB += barSpeed
+    rect(posBX, posBY, wBar, lBar)
+    if (keyIsDown(77) && posBY < windowHeight - lBar) { // M nach unten
+        posBY += barSpeed
     }
-    if (keyIsDown(79) && posB > 0) { // o nach oben
-        posB -= barSpeed
+    if (keyIsDown(73) && posBY > 0) { // I nach oben
+        posBY -= barSpeed
     }
+    if (keyIsDown(74) && posBX >= 0) { // J nach links
+        posBX -= barSpeed
+    }
+    if (keyIsDown(75) && posBX <= windowWidth) { // K nach rechts
+        posBX += barSpeed
+    }
+
+
 
     // Ball
     fill(255)
@@ -161,11 +198,11 @@ function playGame() {
         speedY = -speedY
     }
 
-    const ballAmLinkenRand = xBall < wBar + dBall/2 && xBall + dBall/2 > 0
-    const ballAufHoeheLinkesPaddle = yBall > posA && yBall < posA + lBar
+    const ballAmLinkenRand = xBall < posAX + wBar + dBall/2 && xBall + dBall/2 > posAX
+    const ballAufHoeheLinkesPaddle = yBall > posAY && yBall < posAY + lBar
 
-    const ballAmRechtenRand = xBall > windowWidth - wBar - dBall/2 && xBall - dBall/2 < windowWidth
-    const ballAufHoeheRechtesPaddle = yBall > posB && yBall < posB + lBar
+    const ballAmRechtenRand = xBall > rightEnd - wBar - dBall/2 - posBX && xBall - dBall/2 < rightEnd - posBX
+    const ballAufHoeheRechtesPaddle = yBall > posBY && yBall < posBY + lBar
 
     const abprallLinks = ballAmLinkenRand && ballAufHoeheLinkesPaddle
     const abprallRechts = ballAmRechtenRand && ballAufHoeheRechtesPaddle
