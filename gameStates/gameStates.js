@@ -15,7 +15,7 @@ let lowerSSL
 
 
 var wBar = 10 // With of bar
-var lBar = 600 // Length of bar
+var lBar = 200 // Length of bar
 var dBall = 20 // Diameter of ball
 var speedX = 5
 var speedY = 10
@@ -75,8 +75,8 @@ upperSSL = border*2 + fieldHeight*0.125
 lowerSSL = border*2 + fieldHeight*0.875
 
 // 
-posAY = border*2 + fieldHeight/2 - lBar/2 // y-Position of barA
-posBY = border*2 + fieldHeight/2 - lBar/2 // Position of barB
+posAY = border*2 + fieldHeight/2 + lBar/2 // y-Position of barA
+posBY = border*2 + fieldHeight/2 + lBar/2 // Position of barB
 posAX = border // x-Position von barA
 posBX = rightEnd - wBar // x-Position von barB
 
@@ -201,10 +201,10 @@ function playGame() {
     if (keyIsDown(87) && posAY > 2*border) { // W nach oben
         posAY -= barSpeed
     }
-    if (keyIsDown(83) && posAX <= TLineA) { // S nach rechts
+    if (keyIsDown(83) && posAX < TLineA - wBar) { // S nach rechts
         posAX += barSpeed
     }
-    if (keyIsDown(65) && posAX >= border + 2*wBar) { // A nach links
+    if (keyIsDown(65) && posAX > border) { // A nach links
         posAX -= barSpeed
     }
 
@@ -215,16 +215,16 @@ function playGame() {
     textAlign(RIGHT);
     text(scoreB, width - border, border)
     rect(posBX, posBY, wBar, lBar)
-    if (keyIsDown(77) && posBY < border * 2 + fieldHeight - lBar) { // M nach unten
+    if (keyIsDown(77) && posBY < border*2 + fieldHeight - lBar) { // M nach unten
         posBY += barSpeed
     }
     if (keyIsDown(73) && posBY > 2*border) { // I nach oben
         posBY -= barSpeed
     }
-    if (keyIsDown(74) && posBX >= TLineB + wBar/2) { // J nach links
+    if (keyIsDown(74) && posBX > TLineB) { // J nach links
         posBX -= barSpeed
     }
-    if (keyIsDown(75) && posBX <= border + fieldWide - 2*wBar) { // K nach rechts
+    if (keyIsDown(75) && posBX < rightEnd - wBar) { // K nach rechts
         posBX += barSpeed
     }
 
