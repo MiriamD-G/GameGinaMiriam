@@ -27,12 +27,21 @@ let posAX
 let posBX
 let scoreA = 0
 let scoreB = 0
-let barSpeed = 25 // Reaktionsgeschwindigkeit der Balken
+let barSpeed = 50 // Reaktionsgeschwindigkeit der Balken
 let delayAfterScore = 1000
 let timeScored = null
 let scoreUpdated = false
 let arrow
-let goal = 3
+let goal = 1
+
+let pg;
+let tX, tY, sp, dspx, dspy, fct;
+let tilesX = 3;
+let tilesY = 2;
+let speed = 0.1;
+let displacementX = 3;
+let displacementY = 0.5;
+let offset = 30;
 
 // Farben
 let colA
@@ -42,6 +51,19 @@ let colBG
 
 function setup(){
 createCanvas (windowWidth, windowHeight)
+
+// PGraphics
+push()
+pg = createGraphics(windowWidth / 1.4, windowHeight / 1.5);
+pop()
+// rectMode(CENTER);
+pg.background(20, 51, 51);
+pg.fill(255);
+pg.textSize(200);
+push()
+pg.translate(windowWidth / 2, windowHeight / 2);
+pg.textAlign(CENTER, CENTER);
+pop()
 
 // Feldlinien
 fieldWide = windowWidth - border*2
@@ -251,18 +273,90 @@ function playGame() {
 
 function finishGame(){
     if (scoreA == goal){
-        background(colA)
+        background(colBG)
     } else if (scoreB == goal){
-        background(colB)
+        background(colBG)
     }
     textAlign(CENTER)
     textSize(30)
-    text("The Winner is: ", width/2, height/2)
+    // text("The Winner is: ", width/2, height/2)
     if (scoreA == goal) {
-        text("A", width/2, height/2 + 40)
+        let tileW = int(width / tilesX);
+        let tileH = int(height / tilesY);
+
+        for (let y = 0; y < tilesY; y++) {
+            for (let x = 0; x < tilesX; x++) {
+                pg.text("LEFT", 0, 0);
+
+                // WARP
+                let waveX = int(sin(frameCount * speed + (x * y) * displacementX) * offset);
+                let waveY = int(sin(frameCount * speed + (x * y) * displacementY) * offset);
+
+                if (displacementX === 0) {
+                    waveX = 0;
+                }
+
+                if (displacementY === 0) {
+                    waveY = 0;
+                }
+
+                // image(pg,0,0)
+
+                // SOURCE
+                let sx = x * tileW + waveX;
+                let sy = y * tileH + waveY;
+                let sw = tileW;
+                let sh = tileH;
+
+                // DESTINATION
+                let dx = x * tileW;
+                let dy = y * tileH;
+                let dw = tileW;
+                let dh = tileH;
+
+                copy(pg, sx, sy, sw, sh, dx, dy, dw, dh);
+
+            }
+        }
     }
-    if (scoreB == goal) {
-        text("B", width/2, height/2 + 40)
+    else if (scoreB == goal) {
+        background(colBG)
+        let tileW = int(width / tilesX);
+        let tileH = int(height / tilesY);
+
+        for (let y = 0; y < tilesY; y++) {
+            for (let x = 0; x < tilesX; x++) {
+                pg.text("RIGHT", 0, 0);
+
+                // WARP
+                let waveX = int(sin(frameCount * speed + (x * y) * displacementX) * offset);
+                let waveY = int(sin(frameCount * speed + (x * y) * displacementY) * offset);
+
+                if (displacementX === 0) {
+                    waveX = 0;
+                }
+
+                if (displacementY === 0) {
+                    waveY = 0;
+                }
+
+                // image(pg,0,0)
+
+                // SOURCE
+                let sx = x * tileW + waveX;
+                let sy = y * tileH + waveY;
+                let sw = tileW;
+                let sh = tileH;
+
+                // DESTINATION
+                let dx = x * tileW;
+                let dy = y * tileH;
+                let dw = tileW;
+                let dh = tileH;
+
+                copy(pg, sx, sy, sw, sh, dx, dy, dw, dh);
+            }
+        }
     }
 }
 

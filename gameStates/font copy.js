@@ -9,52 +9,32 @@
 
 
 
-let font;
 let pg;
-let cnv;
-
 let tX, tY, sp, dspx, dspy, fct;
-
-function centerCanvas() {
-    var x = (windowWidth - width) / 2;
-    var y = (windowHeight - height) / 2;
-    cnv.position(x, y);
-}
+let tilesX = 3;
+let tilesY = 2;
+let speed = 0.1;
+let displacementX = 3;
+let displacementY = 0.5;
+let offset = 30;
 
 function setup() {
+    createCanvas(windowWidth, windowHeight);
 
-    cnv = createCanvas(600, 300);
-    centerCanvas();
-    background(255, 0, 200);
-    pg = createGraphics(600, 300);
+    // PGraphics
+    pg = createGraphics(windowWidth/1.4, windowHeight/1.5);
+    rectMode(CENTER);
+    pg.background(0);
+    pg.fill(255);
+    pg.textSize(200);
+    pg.translate(windowWidth / 2, windowHeight / 2);
+    pg.textAlign(CENTER, CENTER);
+    pg.text("RIGHT", 0, 0);
+}
 
-}
-function windowResized() {
-    centerCanvas();
-}
 function draw() {
     background(0);
 
-
-    // PGraphics
-
-    pg.background(0);
-    pg.fill(255);
-    // pg.textFont(font);
-    pg.textSize(200);
-    pg.push();
-    pg.translate(width / 2, height / 2);
-    pg.textAlign(CENTER, CENTER);
-    pg.text("RIGHT", 0, 0);
-    pg.pop();
-
-
-    let tilesX = 8;
-    let tilesY = 3;
-    let speed = 0.1;
-    let displacementX = 0.05;
-    let displacementY = 0.5;
-    let offset = 30;
 
     let tileW = int(width / tilesX);
     let tileH = int(height / tilesY);
@@ -82,14 +62,11 @@ function draw() {
             let sw = tileW;
             let sh = tileH;
 
-
             // DESTINATION
             let dx = x * tileW;
             let dy = y * tileH;
             let dw = tileW;
             let dh = tileH;
-
-
 
             copy(pg, sx, sy, sw, sh, dx, dy, dw, dh);
 
